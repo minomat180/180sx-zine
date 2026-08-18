@@ -47,12 +47,13 @@ export const tracks = [
 //   { kind: "file",    src: "/media/video/drift.mp4" }
 //   { kind: "youtube", id: "VIDEO_ID" }
 //
-// PLACEHOLDER: a YouTube embed until you drop your own drift clip in
-// public/media/video/ and switch this to kind: "file".
+// Embedded rather than self-hosted: no bandwidth cost, and it plays without
+// shipping a single byte. Switch to kind: "file" when you have footage of
+// your own to serve.
 export const video = {
   kind: "youtube",
-  id: "NVv4SRv99vA",
-  title: "drift.avi",
+  id: "CsaEQvSFEgM",
+  title: "SR20 180SX Touge Drift",
 }
 
 // ── TEXT ─────────────────────────────────────────────────────────────────────
