@@ -1,6 +1,6 @@
 # 180SX Zine
 
-A Nissan 180SX Type X fan zine, built as a fake Windows 98 desktop. There are no
+The Nissan 180SX Type X fan zine, built as a fake Windows 98 desktop. There are no
 pages and nothing scrolls — you land on a desktop and open windows.
 
 Style reference: [fakeverything.com](https://fakeverything.com).
