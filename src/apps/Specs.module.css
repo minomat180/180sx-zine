@@ -1,0 +1,56 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.menubar {
+  display: flex;
+  gap: 2px;
+  flex: 0 0 auto;
+  padding: 1px 2px 3px;
+}
+
+.menubar button {
+  background: none;
+  border: none;
+  box-shadow: none;
+  min-width: 0;
+  min-height: 0;
+  padding: 2px 7px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  cursor: default;
+}
+
+.menubar button:hover {
+  background: var(--w98-selection);
+  color: #fff;
+}
+
+.menubar u {
+  text-decoration: underline;
+}
+
+.paper {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  background: #fff;
+  padding: 4px 6px;
+  box-shadow:
+    inset -1px -1px var(--w98-white),
+    inset 1px 1px var(--w98-shadow),
+    inset -2px -2px var(--w98-light),
+    inset 2px 2px var(--w98-dark);
+}
+
+.paper pre {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.35;
+  color: #000;
+  white-space: pre;
+}

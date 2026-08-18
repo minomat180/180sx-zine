@@ -1,0 +1,63 @@
+.boot {
+  position: fixed;
+  inset: 0;
+  z-index: 300000;
+  background: #000;
+  color: #c0c0c0;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.45;
+  padding: 22px 26px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.boot pre {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.cursor {
+  display: inline-block;
+  width: 8px;
+  height: 14px;
+  background: #c0c0c0;
+  vertical-align: text-bottom;
+  animation: blink 1s steps(2, start) infinite;
+}
+
+@keyframes blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+.skip {
+  position: absolute;
+  right: 20px;
+  bottom: 16px;
+  color: #6a6a6a;
+  font-size: 12px;
+}
+
+.off {
+  position: fixed;
+  inset: 0;
+  z-index: 300000;
+  background: #000;
+  color: #d8a94a;
+  font-family: var(--font-mono);
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor {
+    animation: none;
+  }
+}

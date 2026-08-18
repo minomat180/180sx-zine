@@ -1,0 +1,56 @@
+.frame {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  min-width: 160px;
+  min-height: 80px;
+}
+
+/* 98.css sizes .window for a document; we want it to fill the frame so the
+   body can scroll instead of the window growing. */
+.frame > :global(.window) {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 3px;
+  margin: 0;
+}
+
+.titlebar {
+  cursor: default;
+  flex: 0 0 auto;
+  /* The drag handle. Never let a slow pointer select the title text. */
+  touch-action: none;
+}
+
+.titleText {
+  font-family: var(--font-mono);
+  font-weight: bold;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.body {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.maximized {
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: calc(100% - var(--taskbar-h)) !important;
+}
+
+/* While any window is being dragged, iframes and video elements swallow the
+   pointer events and the drag stalls. This class goes on the desktop root. */
+:global(.dragging) .frame iframe,
+:global(.dragging) .frame video {
+  pointer-events: none;
+}

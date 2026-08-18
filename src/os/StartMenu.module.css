@@ -1,0 +1,94 @@
+.menu {
+  position: fixed;
+  left: 2px;
+  bottom: var(--taskbar-h);
+  z-index: 99999;
+  display: flex;
+  background: var(--w98-face);
+  padding: 3px;
+  min-width: 200px;
+}
+
+/* The vertical branded strip down the left of a real Start menu. */
+.spine {
+  width: 24px;
+  flex: 0 0 24px;
+  background: linear-gradient(0deg, var(--w98-title-a), #2a2a6a);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 8px;
+}
+
+.spineText {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: var(--font-pixel);
+  font-size: 11px;
+  color: #fff;
+  letter-spacing: 2px;
+}
+
+.items {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  padding-left: 3px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 22px 5px 6px;
+  background: none;
+  border: none;
+  box-shadow: none;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  text-align: left;
+  cursor: default;
+  position: relative;
+  color: #000;
+}
+
+.item:hover,
+.item:focus-visible {
+  background: var(--w98-selection);
+  color: #fff;
+  outline: none;
+}
+
+.item[data-has-submenu="true"]::after {
+  content: "";
+  position: absolute;
+  right: 6px;
+  border: 4px solid transparent;
+  border-left-color: currentColor;
+}
+
+.separator {
+  height: 2px;
+  margin: 3px 2px;
+  box-shadow:
+    inset 0 1px var(--w98-shadow),
+    inset 0 -1px var(--w98-white);
+}
+
+.submenu {
+  position: absolute;
+  left: 100%;
+  bottom: 0;
+  background: var(--w98-face);
+  padding: 3px;
+  min-width: 170px;
+  display: flex;
+  flex-direction: column;
+}
+
+.submenuHost {
+  position: relative;
+}

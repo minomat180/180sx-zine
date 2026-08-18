@@ -1,0 +1,73 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  gap: 3px;
+}
+
+.stage {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  overflow: hidden;
+  box-shadow:
+    inset -1px -1px var(--w98-white),
+    inset 1px 1px var(--w98-shadow),
+    inset -2px -2px var(--w98-light),
+    inset 2px 2px var(--w98-dark);
+}
+
+.stage img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+  /* The same cold instrument-panel grade the older 180sx page uses. */
+  filter: saturate(0.34) hue-rotate(178deg) contrast(1.1);
+}
+
+.controls {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 1px;
+}
+
+.caption {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0 4px;
+}
+
+.statusbar {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 2px;
+}
+
+.statusField {
+  padding: 2px 5px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-shadow:
+    inset -1px -1px var(--w98-white),
+    inset 1px 1px var(--w98-shadow);
+}
+
+.statusField:first-child {
+  flex: 1 1 auto;
+  min-width: 0;
+}

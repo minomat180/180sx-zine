@@ -1,0 +1,57 @@
+.dialog {
+  position: absolute;
+  width: 300px;
+  z-index: 90000;
+}
+
+.body {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 12px 6px;
+}
+
+.text {
+  flex: 1 1 auto;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0 10px;
+}
+
+.actions button {
+  min-width: 80px;
+}
+
+.bsod {
+  position: fixed;
+  inset: 0;
+  z-index: 200000;
+  background: #0000aa;
+  color: #c0c0c0;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  line-height: 1.6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  cursor: pointer;
+}
+
+.bsod pre {
+  margin: 0;
+  max-width: 720px;
+  white-space: pre-wrap;
+}
+
+.bsod b {
+  background: #c0c0c0;
+  color: #0000aa;
+  padding: 0 6px;
+}

@@ -1,0 +1,122 @@
+.desktop {
+  position: fixed;
+  inset: 0 0 var(--taskbar-h) 0;
+  overflow: hidden;
+  background-color: #000;
+  background-size: cover;
+  background-position: center;
+  /* Cold, blown-out instrument-panel treatment — carried over from the older
+     180sx page so the two projects read as siblings. */
+  image-rendering: auto;
+}
+
+/* Wallpaper sits in its own layer so the filter doesn't hit the icons. */
+.wallpaper {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  /* Pushed well down: the wallpaper is scenery, and white icon labels have to
+     stay readable over a photo that's mostly silver bodywork. */
+  filter: saturate(0.1) contrast(1.2) brightness(0.32);
+  pointer-events: none;
+}
+
+/* Vignette, so the corners the icons sit in are darker still. */
+.vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at 60% 45%,
+    transparent 20%,
+    rgba(0, 0, 0, 0.55) 85%
+  );
+}
+
+/* Scanline + noise overlay. Cheap, and it does most of the work of making a
+   clean photo look like a 1998 CRT. */
+.crt {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.28) 0px,
+    rgba(0, 0, 0, 0.28) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: multiply;
+}
+
+.iconGrid {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  bottom: 8px;
+  display: grid;
+  /* Fills top-to-bottom down the left edge and only starts a second column
+     when the first runs out of height — like a real desktop. Sizing the rows
+     (not the columns) is what makes column flow wrap correctly. */
+  grid-auto-flow: column;
+  grid-template-rows: repeat(auto-fill, 82px);
+  grid-auto-columns: 78px;
+  gap: 2px;
+}
+
+.icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 2px;
+  border: 1px dotted transparent;
+  cursor: default;
+  /* 98.css gives every <button> the raised silver bevel; desktop icons are
+     buttons for keyboard access but must not look like one. */
+  background: none;
+  box-shadow: none;
+  min-width: 0;
+  min-height: 0;
+  width: 78px;
+}
+
+.icon:focus-visible {
+  border-color: #fff;
+  outline: none;
+}
+
+.icon span {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #fff;
+  text-align: center;
+  text-shadow: 1px 1px 0 #000;
+  padding: 1px 3px;
+  line-height: 1.2;
+  word-break: break-word;
+}
+
+.icon[data-selected="true"] span {
+  background: var(--w98-selection);
+}
+
+.icon[data-selected="true"] svg {
+  filter: brightness(0.7) sepia(1) hue-rotate(200deg) saturate(3);
+}
+
+@media (max-width: 767px) {
+  .iconGrid {
+    grid-auto-flow: row;
+    grid-template-rows: none;
+    grid-template-columns: repeat(auto-fill, 92px);
+    grid-auto-rows: 96px;
+    bottom: auto;
+    width: calc(100% - 16px);
+  }
+  .icon {
+    width: 92px;
+    padding: 8px 2px;
+  }
+}

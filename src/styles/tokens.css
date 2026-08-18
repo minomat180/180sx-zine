@@ -1,0 +1,82 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Handjet:wght@100..900&display=swap");
+
+:root {
+  /* Windows 98 system palette. These are the real values — 98.css uses the
+     same ones, we just need them by name for our own chrome. */
+  --w98-face: #c0c0c0;
+  --w98-shadow: #808080;
+  --w98-dark: #0a0a0a;
+  --w98-light: #dfdfdf;
+  --w98-white: #ffffff;
+  --w98-title-a: #000080;
+  --w98-title-b: #1084d0;
+  --w98-desktop: #008080;
+  --w98-selection: #000080;
+
+  --terminal-bg: #0c0c0c;
+  --terminal-fg: #e8e8e8;
+
+  --font-pixel: "Press Start 2P", monospace;
+  --font-terminal: "Handjet", "Courier New", monospace;
+  --font-mono: "Courier New", monospace;
+
+  --taskbar-h: 28px;
+}
+
+/* The outset bevel that every raised Win98 surface uses. */
+.bevel-out {
+  box-shadow:
+    inset -1px -1px var(--w98-dark),
+    inset 1px 1px var(--w98-white),
+    inset -2px -2px var(--w98-shadow),
+    inset 2px 2px var(--w98-light);
+}
+
+/* ...and the inset one, for wells and sunken panels. */
+.bevel-in {
+  box-shadow:
+    inset -1px -1px var(--w98-white),
+    inset 1px 1px var(--w98-shadow),
+    inset -2px -2px var(--w98-light),
+    inset 2px 2px var(--w98-dark);
+}
+
+* {
+  box-sizing: border-box;
+  border-radius: 0;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+body {
+  background: var(--w98-desktop);
+  /* No text selection anywhere — real desktops don't let you highlight their
+     icons, and it makes dragging feel broken. Re-enabled per-element below. */
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Content that genuinely is text should still be selectable. */
+.selectable,
+input,
+textarea {
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+/* 98.css styles bare <pre> as a sunken white code block. We use <pre> for
+   layout (Notepad body, BSOD, boot screen), so strip it back and let each
+   place style its own container. */
+pre {
+  background: none;
+  box-shadow: none;
+  padding: 0;
+}

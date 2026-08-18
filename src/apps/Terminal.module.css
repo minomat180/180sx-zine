@@ -1,0 +1,64 @@
+.console {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--terminal-bg);
+  color: var(--terminal-fg);
+  font-family: var(--font-terminal);
+  font-size: 17px;
+  line-height: 1.25;
+  letter-spacing: 0.05em;
+  padding: 6px 8px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  cursor: text;
+  box-shadow:
+    inset -1px -1px var(--w98-white),
+    inset 1px 1px var(--w98-shadow),
+    inset -2px -2px var(--w98-light),
+    inset 2px 2px var(--w98-dark);
+}
+
+.line {
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.line[data-kind="err"] {
+  color: #ff6a6a;
+}
+
+.line[data-kind="dim"] {
+  color: #8f8f8f;
+}
+
+.line[data-kind="art"] {
+  white-space: pre;
+  color: #7fa9ce;
+  letter-spacing: 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.1;
+}
+
+.prompt {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.prompt input {
+  flex: 1 1 auto;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  padding: 0;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+}
