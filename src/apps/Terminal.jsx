@@ -24,13 +24,13 @@ const HELP = [
   "  dir | ls          list what's on this machine",
   "  open <name>       open a window  (try: open gallery)",
   "  play | stop       control Fakeamp",
-  "  neofetch          system information",
+  "  fastfetch         system information",
   "  whoami            who is at this terminal",
   "  drift             don't",
   "  cls | clear       clear the screen",
 ]
 
-const NEOFETCH = (uptime) => [
+const FASTFETCH = (uptime) => [
   { kind: "art", text: ART },
   { text: "user@rps13" },
   { text: "----------" },
@@ -128,8 +128,8 @@ export default function Terminal({ onOpen, onPlay, onStop, onDrift }) {
         print({ text: "Fakeamp: stopped.", kind: "dim" }, "")
         break
 
-      case "neofetch":
-        print(...NEOFETCH(formatUptime(Date.now() - bootedAt.current)), "")
+      case "fastfetch":
+        print(...FASTFETCH(formatUptime(Date.now() - bootedAt.current)), "")
         break
 
       case "whoami":
