@@ -28,9 +28,8 @@ npm run dev
 
 These are stand-ins, meant to be replaced:
 
-- **Audio** — `eng_idle.mp3`, `eng_fast.mp3`, `eng_fast2.mp3` are the short
-  SR20DET engine clips lifted from `~/projects/180sx`. They are not music.
-- **Video** — a YouTube embed of someone else's 180SX film.
+- **Audio** — one track, `s13-runs-10s.mp3`. The three placeholder SR20DET
+  engine clips from `~/projects/180sx` are gone.
 - **Photos** — extracted from the base64 blobs in `~/projects/180sx/index.html`
   (Wikimedia Commons, CC BY-SA 4.0 / CC0). See `scripts/extract-photos.mjs`.
 

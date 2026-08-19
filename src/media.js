@@ -15,29 +15,20 @@ export const photos = [
   { src: "/media/photos/black.jpg", caption: "Kouki front end" },
   { src: "/media/photos/navy.jpg", caption: "Three-quarter" },
   { src: "/media/photos/rear.jpg", caption: "Kouki tail lamps" },
+  { src: "/media/photos/meihan-2019.webp", caption: "Meihan, 2019 — leading an S13" },
 ]
 
 // Desktop background. Set to null to fall back to photos[0].
-export const wallpaper = "/media/photos/hero.jpg"
+// Kept out of `photos` on purpose: it's scenery, not a gallery image.
+export const wallpaper = "/media/photos/drift-wall.jpg"
 
 // ── AUDIO ────────────────────────────────────────────────────────────────────
-// Loaded into Fakeamp's playlist, in order.
-//
-// PLACEHOLDERS: these are the short SR20DET engine clips from the older
-// ~/projects/180sx page. Swap them for your own tracks — drop mp3s into
-// public/media/audio/ and rewrite this list.
+// Loaded into Fakeamp's playlist, in order. Add more by dropping mp3s into
+// public/media/audio/ and appending an entry here — nothing else to change.
 export const tracks = [
   {
-    url: "/media/audio/eng_idle.mp3",
-    metaData: { title: "Idle", artist: "SR20DET" },
-  },
-  {
-    url: "/media/audio/eng_fast.mp3",
-    metaData: { title: "Pull", artist: "SR20DET" },
-  },
-  {
-    url: "/media/audio/eng_fast2.mp3",
-    metaData: { title: "Pull II", artist: "SR20DET" },
+    url: "/media/audio/s13-runs-10s.mp3",
+    metaData: { title: "S13 180SX runs 10s", artist: "Fullboost" },
   },
 ]
 
