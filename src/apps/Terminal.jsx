@@ -5,13 +5,15 @@ import { specsText } from "../media.js"
 
 const PROMPT = "C:\\User>"
 
+// Block letters rather than a drawing. A car outline needs more rows than
+// the console has (the window is 460x300), and anything detailed enough to
+// read turns to mush at 11px.
 const ART = String.raw`
-        ______________________
-   ____/ |                    \____
-  /     _|_                        \
- |  ___/   \___    180SX  TYPE X    |
- |_/   \_______\____________________|
-   \___/                  \___/
+ ██  ████ ████ ████ █  █
+███  █  █ █  █ █    █  █
+ ██  ████ █  █ ████  ██ 
+ ██  █  █ █  █    █ █  █
+████ ████ ████ ████ █  █
 `
 
 const HELP = [

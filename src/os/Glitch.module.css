@@ -1,0 +1,108 @@
+.layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Clip window for one slice. `overflow: hidden` is what makes the child show
+   only this horizontal strip of the wallpaper; translating the window is what
+   makes that strip appear torn out of line. */
+.band {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--y);
+  height: var(--h);
+  overflow: hidden;
+  transform: translateX(var(--dx));
+  filter: brightness(var(--bright));
+  /* Held keyframes rather than a steps() timing function: steps() quantises
+     the whole animation to N samples, which silently ate the stutter. Ends on
+     opacity 0 so the tear clears itself before React unmounts it. */
+  animation: tear 0.34s linear 1 forwards;
+}
+
+/* The wallpaper again, at exactly the size and position Desktop draws it, then
+   pulled up so the band's window lands on the right part of the image. Same
+   filter as the real wallpaper, so a slice never reads brighter than what it
+   sits in. */
+.slice {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(-1 * var(--y));
+  height: calc(100vh - var(--taskbar-h));
+  background-size: cover;
+  background-position: center;
+  filter: saturate(0.1) contrast(1.2) brightness(0.32);
+}
+
+/* Blown-out dropouts. Deliberately hard-edged and unfiltered — this is the bit
+   that reads as "the signal lost some blocks", not as lighting. */
+.block {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.82);
+  mix-blend-mode: screen;
+  /* Faster than the tear on purpose: the dropouts should already be gone by
+     the time the slices snap back. */
+  animation: blink 0.2s linear 1 forwards;
+}
+
+.block[data-dim="true"] {
+  background: rgba(10, 14, 24, 0.9);
+  mix-blend-mode: normal;
+}
+
+/* Each value is held across a pair of keyframes, so the slice snaps between
+   positions instead of sliding — sliding reads as animation, snapping reads as
+   a broken signal. */
+@keyframes tear {
+  0%,
+  24% {
+    transform: translateX(var(--dx));
+    opacity: 1;
+  }
+  25%,
+  49% {
+    transform: translateX(calc(var(--dx) * -0.6));
+    opacity: 1;
+  }
+  50%,
+  74% {
+    transform: translateX(calc(var(--dx) * 1.35));
+    opacity: 1;
+  }
+  75%,
+  99% {
+    transform: translateX(calc(var(--dx) * -0.25));
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes blink {
+  0%,
+  29% {
+    opacity: 1;
+  }
+  30%,
+  49% {
+    opacity: 0;
+  }
+  50%,
+  79% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .layer {
+    display: none;
+  }
+}

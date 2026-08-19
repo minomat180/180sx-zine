@@ -1,6 +1,7 @@
 import { useState } from "react"
 import styles from "./Desktop.module.css"
 import Icon from "./Icon.jsx"
+import Glitch from "./Glitch.jsx"
 import { desktopIcons } from "./appSpecs.js"
 import { isSmallScreen } from "./windowStore.js"
 import { wallpaper, photos } from "../media.js"
@@ -25,6 +26,9 @@ export default function Desktop({ onLaunch }) {
       }}
     >
       {bg && <div className={styles.wallpaper} style={{ backgroundImage: `url(${bg})` }} />}
+      {/* Above the wallpaper so the tear is visible, below the icons so labels
+          never flicker out from under you mid-click. */}
+      <Glitch src={bg} />
       <div className={styles.vignette} />
       <div className={styles.crt} />
 

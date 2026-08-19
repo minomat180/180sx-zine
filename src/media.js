@@ -47,12 +47,13 @@ export const tracks = [
 //   { kind: "file",    src: "/media/video/drift.mp4" }
 //   { kind: "youtube", id: "VIDEO_ID" }
 //
-// Embedded rather than self-hosted: no bandwidth cost, and it plays without
-// shipping a single byte. Switch to kind: "file" when you have footage of
-// your own to serve.
+// Self-hosted. The source was 4K AV1 at 129 MB; Cloudflare Pages rejects any
+// single file over 25 MB, so it ships as 1280x600 H.264 at ~1.9 Mbps (21.6 MB)
+// with faststart, which also avoids AV1's patchy browser support.
+// Swap to kind: "youtube" if a clip is ever too long to fit the budget.
 export const video = {
-  kind: "youtube",
-  id: "CsaEQvSFEgM",
+  kind: "file",
+  src: "/media/video/drift.mp4",
   title: "SR20 180SX Touge Drift",
 }
 
