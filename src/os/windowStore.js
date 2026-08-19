@@ -25,6 +25,22 @@ export function useWindow(id) {
   return useSyncExternalStore(subscribe, () => state.windows.find((w) => w.id === id))
 }
 
+/**
+ * Take the next stacking slot without touching any window.
+ *
+ * Webamp draws its own chrome outside the window list, but it still has to
+ * compete for depth with it. Pinning it to a fixed z-index meant no window
+ * could ever be raised above the player — clicking one brought it to the front
+ * of the window list and it still sat behind Webamp.
+ *
+ * `windows` keeps its identity here, so subscribers don't re-render.
+ */
+export function allocZ() {
+  const z = state.nextZ
+  set({ ...state, nextZ: state.nextZ + 1 })
+  return z
+}
+
 export const isSmallScreen = () =>
   typeof window !== "undefined" && window.innerWidth < 768
 

@@ -18,7 +18,7 @@ export default function VideoWindow() {
       <div style={box}>
         <iframe
           style={{ width: "100%", height: "100%", border: 0, display: "block" }}
-          src={`https://www.youtube-nocookie.com/embed/${video.id}`}
+          src={`https://www.youtube-nocookie.com/embed/${video.id}?loop=1&playlist=${video.id}`}
           title={video.title ?? "Video"}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
@@ -33,6 +33,7 @@ export default function VideoWindow() {
         <video
           src={video.src}
           controls
+          loop
           playsInline
           style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
         />

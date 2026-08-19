@@ -28,7 +28,7 @@ npm run dev
 
 These are stand-ins, meant to be replaced:
 
-- **Audio** — one track, `s13-runs-10s.mp3`. The three placeholder SR20DET
+- **Audio** — four tracks in `public/media/audio/`. The placeholder SR20DET
   engine clips from `~/projects/180sx` are gone.
 - **Photos** — extracted from the base64 blobs in `~/projects/180sx/index.html`
   (Wikimedia Commons, CC BY-SA 4.0 / CC0). See `scripts/extract-photos.mjs`.

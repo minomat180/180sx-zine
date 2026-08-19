@@ -27,10 +27,6 @@ export const wallpaper = "/media/photos/drift-wall.jpg"
 // public/media/audio/ and appending an entry here — nothing else to change.
 export const tracks = [
   {
-    url: "/media/audio/s13-runs-10s.mp3",
-    metaData: { title: "secret", artist: "Fullboost" },
-  },
-  {
     url: "/media/audio/asleep-in-space.mp3",
     metaData: { title: "Asleep In Space", artist: "Zachariehs" },
   },

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { tracks } from "../media.js"
 import { setAmp } from "../os/ampBridge.js"
+import { allocZ } from "../os/windowStore.js"
 
 /**
  * Webamp renders its own chrome and manages its own dragging, so it lives
@@ -19,6 +20,7 @@ export default function Fakeamp({ visible, onClose, volume, instanceRef }) {
   const hostRef = useRef(null)
   const rootRef = useRef(null)
   const webampRef = useRef(null)
+  const raiseRef = useRef(null)
   // Webamp is ~900 kB. Nothing is loaded until the user first opens it.
   const [requested, setRequested] = useState(false)
   // Read inside the load callback, which resolves long after the effect that
@@ -69,14 +71,24 @@ export default function Fakeamp({ visible, onClose, volume, instanceRef }) {
         const root = document.getElementById("webamp")
         rootRef.current = root
         if (root) {
-          // Above the desktop windows, below the taskbar.
-          root.style.zIndex = "50000"
+          // Shares the window manager's stacking counter rather than sitting
+          // at a fixed height, so clicking a window can raise it above the
+          // player and clicking the player raises it back. Capture phase:
+          // Webamp stops propagation on its own chrome.
+          root.style.zIndex = String(allocZ())
           root.style.display = visibleRef.current ? "" : "none"
+          raiseRef.current = () => {
+            root.style.zIndex = String(allocZ())
+          }
+          root.addEventListener("pointerdown", raiseRef.current, true)
         }
       })
 
       cleanup = () => {
         unsubscribe()
+        if (rootRef.current && raiseRef.current) {
+          rootRef.current.removeEventListener("pointerdown", raiseRef.current, true)
+        }
         webamp.dispose()
         webampRef.current = null
         rootRef.current = null
@@ -97,7 +109,10 @@ export default function Fakeamp({ visible, onClose, volume, instanceRef }) {
 
   useEffect(() => {
     const root = rootRef.current
-    if (root) root.style.display = visible ? "" : "none"
+    if (root) {
+      root.style.display = visible ? "" : "none"
+      if (visible) root.style.zIndex = String(allocZ())
+    }
     // Webamp's own close button closes its internal windows too, so reopen
     // them when the taskbar brings it back.
     if (visible) webampRef.current?.reopen()
