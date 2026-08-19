@@ -28,11 +28,23 @@ export const wallpaper = "/media/photos/drift-wall.jpg"
 export const tracks = [
   {
     url: "/media/audio/s13-runs-10s.mp3",
-    metaData: { title: "S13 180SX runs 10s", artist: "Fullboost" },
+    metaData: { title: "secret", artist: "Fullboost" },
   },
   {
     url: "/media/audio/asleep-in-space.mp3",
     metaData: { title: "Asleep In Space", artist: "Zachariehs" },
+  },
+  {
+    url: "/media/audio/turn-echo.mp3",
+    metaData: { title: "Turn Echo (slowed + extended)", artist: "Kaikobad" },
+  },
+  {
+    url: "/media/audio/meaningful-love.mp3",
+    metaData: { title: "meaningful love (instrumental)", artist: "Silo" },
+  },
+  {
+    url: "/media/audio/fake-digital-life.mp3",
+    metaData: { title: "Fake Digital Life", artist: "ThirdEy3" },
   },
 ]
 
