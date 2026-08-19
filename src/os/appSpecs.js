@@ -3,9 +3,9 @@
 
 export const APPS = {
   specs: { title: "C:\\Specs.txt", w: 520, h: 460, icon: "note", desktop: true, label: "Specs.txt" },
-  gallery: { title: "C:\\Image_1", w: 520, h: 430, icon: "image", desktop: true, label: "Image1" },
+  gallery: { title: "C:\\Gallery", w: 520, h: 430, icon: "image", desktop: true, label: "Gallery" },
   video: { title: "C:\\Video", w: 480, h: 320, icon: "video", desktop: true, label: "Video" },
-  console: { title: "C:\\Console", w: 460, h: 300, icon: "console", desktop: true, label: "Console" },
+  console: { title: "C:\\Console", w: 580, h: 430, icon: "console", desktop: true, label: "Console" },
   generator: { title: "C:\\Generator", w: 560, h: 480, icon: "generator", desktop: true, label: "Generator" },
   about: { title: "C:\\About", w: 380, h: 240, icon: "note", desktop: false, label: "About" },
 }

@@ -35,7 +35,7 @@
   height: calc(100vh - var(--taskbar-h));
   background-size: cover;
   background-position: center;
-  filter: saturate(0.1) contrast(1.2) brightness(0.32);
+  filter: saturate(0.14) contrast(1.15) brightness(0.5);
 }
 
 /* Blown-out dropouts. Deliberately hard-edged and unfiltered — this is the bit

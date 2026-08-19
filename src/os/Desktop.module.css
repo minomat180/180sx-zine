@@ -18,7 +18,7 @@
   background-position: center;
   /* Pushed well down: the wallpaper is scenery, and white icon labels have to
      stay readable over a photo that's mostly silver bodywork. */
-  filter: saturate(0.1) contrast(1.2) brightness(0.32);
+  filter: saturate(0.14) contrast(1.15) brightness(0.5);
   pointer-events: none;
 }
 

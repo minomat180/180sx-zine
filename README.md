@@ -38,7 +38,7 @@ These are stand-ins, meant to be replaced:
 | Icon | |
 | --- | --- |
 | `Specs.txt` | Notepad with the Type X spec sheet |
-| `Image1` | Image viewer, cycles the photos |
+| `Gallery` | Image viewer, cycles the photos |
 | `Video` | Win98 frame around the drift video |
 | `Console` | Working terminal — try `help`, `fastfetch`, `open gallery`, `drift` |
 | `Generator` | Upload a photo, stack overlays on it, download the result |

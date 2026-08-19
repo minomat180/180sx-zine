@@ -8,7 +8,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 // ── PHOTOS ───────────────────────────────────────────────────────────────────
-// Shown in C:\Image_1 (the gallery). First one is also the desktop wallpaper
+// Shown in C:\Gallery. First one is also the desktop wallpaper
 // unless you set `wallpaper` below.
 export const photos = [
   { src: "/media/photos/hero.jpg", caption: "Type X — 1996 aero package" },
