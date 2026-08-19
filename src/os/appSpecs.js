@@ -7,6 +7,7 @@ export const APPS = {
   video: { title: "C:\\Video", w: 480, h: 320, icon: "video", desktop: true, label: "Video" },
   console: { title: "C:\\Console", w: 580, h: 430, icon: "console", desktop: true, label: "Console" },
   generator: { title: "C:\\Generator", w: 560, h: 480, icon: "generator", desktop: true, label: "Generator" },
+  analyzer: { title: "C:\\Analyzer", w: 520, h: 300, icon: "analyzer", desktop: true, label: "Analyzer" },
   about: { title: "C:\\About", w: 380, h: 240, icon: "note", desktop: false, label: "About" },
 }
 

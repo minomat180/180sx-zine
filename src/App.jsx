@@ -13,6 +13,7 @@ import Gallery from "./apps/Gallery.jsx"
 import VideoWindow from "./apps/VideoWindow.jsx"
 import Terminal from "./apps/Terminal.jsx"
 import Generator from "./apps/Generator.jsx"
+import Analyzer from "./apps/Analyzer.jsx"
 import About from "./apps/About.jsx"
 import Fakeamp from "./apps/Fakeamp.jsx"
 import ErrorBomb from "./apps/ErrorBomb.jsx"
@@ -27,6 +28,7 @@ const COMPONENTS = {
   video: VideoWindow,
   console: Terminal,
   generator: Generator,
+  analyzer: Analyzer,
   about: About,
 }
 

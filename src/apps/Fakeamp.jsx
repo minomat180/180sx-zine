@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { tracks } from "../media.js"
+import { setAmp } from "../os/ampBridge.js"
 
 /**
  * Webamp renders its own chrome and manages its own dragging, so it lives
@@ -56,6 +57,8 @@ export default function Fakeamp({ visible, onClose, volume, instanceRef }) {
       })
       webampRef.current = webamp
       if (instanceRef) instanceRef.current = webamp
+      // Hand the audio graph to anything that wants to read it (the analyzer).
+      setAmp(webamp)
 
       // Webamp's own close button folds it back to the taskbar rather than
       // destroying the instance.
@@ -77,6 +80,7 @@ export default function Fakeamp({ visible, onClose, volume, instanceRef }) {
         webamp.dispose()
         webampRef.current = null
         rootRef.current = null
+        setAmp(null)
         if (instanceRef) instanceRef.current = null
       }
     })

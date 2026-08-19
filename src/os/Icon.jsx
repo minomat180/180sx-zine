@@ -57,6 +57,14 @@ const ICONS = {
       <path d="M13 19h2v6h-2zM17 19h8v2h-8z" fill="#808080" />
     </>
   ),
+  analyzer: (
+    <>
+      <path d="M4 6h24v20H4z" fill="#c0c0c0" stroke="#000" />
+      <path d="M6 8h20v16H6z" fill="#0c0c0c" />
+      <path d="M8 18h2v4H8zM11 14h2v8h-2zM14 10h2v12h-2z" fill="#39ff6a" />
+      <path d="M17 16h2v6h-2zM20 12h2v10h-2zM23 19h2v3h-2z" fill="#e8d84a" />
+    </>
+  ),
   clickme: (
     <>
       <path d="M4 4h24v24H4z" fill="#fff" stroke="#000" />
