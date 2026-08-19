@@ -109,7 +109,6 @@ with Nissan Motor Co., Ltd.
 `.trim()
 
 // C:\About — the Start menu's About box.
-export const aboutText = `A fan zine for the Nissan 180SX Type X, dressed up as a
-computer that stopped being supported a long time ago.
+export const aboutText = `Nissan 180SX Type X.
 
 Everything here is a window. Try the console.`
