@@ -1,0 +1,29 @@
+# The Durable Object that owns the chat room.
+#
+# Deployed separately from the Pages project, because a Pages project cannot
+# define a Durable Object class — only bind to one a Worker exports.
+#
+#   cd worker && npx wrangler deploy
+#
+# Then bind it to the Pages project once (Cloudflare dashboard):
+#   Workers & Pages -> 180sx -> Settings -> Bindings -> Add -> Durable Object
+#   Variable name: CHAT
+#   Worker:        180sx-chat
+#   Class:         ChatRoom
+#
+# This rarely changes, so it is deliberately left out of CI — the pipeline only
+# deploys the site.
+
+name = "180sx-chat"
+main = "src/index.js"
+compatibility_date = "2026-08-01"
+
+[[durable_objects.bindings]]
+name = "CHAT"
+class_name = "ChatRoom"
+
+# SQLite-backed classes are the only kind available on the Workers free plan.
+# Nothing is actually written to storage — this is just the class flavour.
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["ChatRoom"]

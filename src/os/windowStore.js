@@ -44,9 +44,43 @@ export function allocZ() {
 export const isSmallScreen = () =>
   typeof window !== "undefined" && window.innerWidth < 768
 
-// Cascade successive windows so a fresh one never lands exactly on the last.
-function placement(index, w, h) {
-  if (isSmallScreen()) return { x: 0, y: 0 }
+const MARGIN = 8
+const TASKBAR_H = 28
+// Keep clear of the desktop icon column down the left edge.
+const ICON_COL = 92
+// Candidate positions are tried on this grid. Small enough that windows end up
+// snug against each other, coarse enough that the scan stays cheap.
+const SCAN_STEP = 16
+
+const overlaps = (a, b) =>
+  a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y
+
+// Everything a new window should avoid landing on.
+function obstacles() {
+  const list = state.windows
+    .filter((win) => !win.minimized)
+    .map((win) =>
+      win.maximized
+        ? { x: 0, y: 0, w: window.innerWidth, h: window.innerHeight }
+        : { x: win.x, y: win.y, w: win.w, h: win.h },
+    )
+
+  // Webamp renders outside the window list, but it still occupies screen and a
+  // new window shouldn't open underneath it. Read live rather than tracked:
+  // the user can drag it anywhere, so any stored position would be a guess.
+  const amp = typeof document !== "undefined" ? document.getElementById("webamp") : null
+  if (amp && amp.style.display !== "none") {
+    const r = amp.getBoundingClientRect()
+    if (r.width > 0 && r.height > 0) {
+      list.push({ x: r.left, y: r.top, w: r.width, h: r.height })
+    }
+  }
+  return list
+}
+
+// Last resort when nothing fits: the old cascade, so a window still never
+// lands exactly on top of the previous one.
+function cascade(index, w, h) {
   const step = 30
   const maxX = Math.max(0, window.innerWidth - w - 20)
   const maxY = Math.max(0, window.innerHeight - h - 60)
@@ -54,6 +88,28 @@ function placement(index, w, h) {
     x: Math.min(maxX, 60 + ((index * step) % 260)),
     y: Math.min(maxY, 50 + ((index * step) % 200)),
   }
+}
+
+/**
+ * Put a new window in the first free space, scanning left to right then top to
+ * bottom — so opening windows one after another tiles them instead of stacking
+ * them. Windows already on screen are never moved; only the new one is placed.
+ */
+function placement(index, w, h) {
+  if (isSmallScreen()) return { x: 0, y: 0 }
+
+  const maxX = window.innerWidth - w - MARGIN
+  const maxY = window.innerHeight - TASKBAR_H - h - MARGIN
+  if (maxX < ICON_COL || maxY < MARGIN) return cascade(index, w, h)
+
+  const blockers = obstacles()
+  for (let y = MARGIN; y <= maxY; y += SCAN_STEP) {
+    for (let x = ICON_COL; x <= maxX; x += SCAN_STEP) {
+      const candidate = { x, y, w, h }
+      if (!blockers.some((b) => overlaps(candidate, b))) return { x, y }
+    }
+  }
+  return cascade(index, w, h)
 }
 
 /**

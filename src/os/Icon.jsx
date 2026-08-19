@@ -65,6 +65,13 @@ const ICONS = {
       <path d="M17 16h2v6h-2zM20 12h2v10h-2zM23 19h2v3h-2z" fill="#e8d84a" />
     </>
   ),
+  chat: (
+    <>
+      <path d="M3 5h20v14H12l-5 5v-5H3z" fill="#fff" stroke="#000" />
+      <path d="M6 9h13v2H6zM6 13h9v2H6z" fill="#000080" />
+      <path d="M15 3h14v12h-4v4l-4-4h-1" fill="#c0c0c0" stroke="#000" />
+    </>
+  ),
   clickme: (
     <>
       <path d="M4 4h24v24H4z" fill="#fff" stroke="#000" />
