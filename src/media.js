@@ -30,6 +30,10 @@ export const tracks = [
     url: "/media/audio/s13-runs-10s.mp3",
     metaData: { title: "S13 180SX runs 10s", artist: "Fullboost" },
   },
+  {
+    url: "/media/audio/asleep-in-space.mp3",
+    metaData: { title: "Asleep In Space", artist: "Zachariehs" },
+  },
 ]
 
 // ── VIDEO ────────────────────────────────────────────────────────────────────
