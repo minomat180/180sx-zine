@@ -16,7 +16,9 @@ const LINES = [
   "Booting from C: ...",
 ]
 
-const LINE_MS = 90
+// 13 lines at this cadence plus the 420ms hold below is the whole POST, so
+// this is the one number that sets how long the boot lasts: ~2.1s.
+const LINE_MS = 128
 
 export default function Boot({ onDone }) {
   const [n, setN] = useState(0)
