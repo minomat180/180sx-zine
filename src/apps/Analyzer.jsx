@@ -65,20 +65,40 @@ export default function Analyzer() {
     // fftSize is left exactly as Webamp set it. Changing it here would also
     // change what Webamp's own built-in visualizer sees, since it's one shared
     // node — reading from it is free, reconfiguring it is not.
-    const bins = analyser.frequencyBinCount
     const nyquist = analyser.context.sampleRate / 2
-    const freq = new Uint8Array(bins)
-    const time = new Uint8Array(analyser.fftSize)
 
     // Log-spaced band edges. Linear bins put almost everything in the bottom
     // two bars and leave the rest dead, because pitch is logarithmic.
-    const edges = []
-    for (let i = 0; i <= BARS; i++) {
-      const hz = MIN_HZ * (MAX_HZ / MIN_HZ) ** (i / BARS)
-      edges.push(Math.max(0, Math.min(bins - 1, Math.round((hz / nyquist) * bins))))
+    const buildEdges = (bins) => {
+      const out = []
+      for (let i = 0; i <= BARS; i++) {
+        const hz = MIN_HZ * (MAX_HZ / MIN_HZ) ** (i / BARS)
+        out.push(Math.max(0, Math.min(bins - 1, Math.round((hz / nyquist) * bins))))
+      }
+      for (let i = 1; i < out.length; i++) {
+        if (out[i] <= out[i - 1]) out[i] = out[i - 1] + 1
+      }
+      return out
     }
-    for (let i = 1; i < edges.length; i++) {
-      if (edges[i] <= edges[i - 1]) edges[i] = edges[i - 1] + 1
+
+    let freq = new Uint8Array(analyser.frequencyBinCount)
+    let time = new Uint8Array(analyser.fftSize)
+    let edges = buildEdges(freq.length)
+
+    // Webamp owns this node and can change fftSize after we've read it. When
+    // that happens getByteTimeDomainData only fills the first fftSize slots
+    // and leaves the tail at 0 — and 0 is not silence here, silence is 128, so
+    // the stale tail renders as a hard pin to the innermost radius. That's the
+    // half-drawn circle. Re-check the sizes every frame; it's two integer
+    // comparisons.
+    const syncBuffers = () => {
+      if (freq.length !== analyser.frequencyBinCount) {
+        freq = new Uint8Array(analyser.frequencyBinCount)
+        edges = buildEdges(freq.length)
+      }
+      if (time.length !== analyser.fftSize) {
+        time = new Uint8Array(analyser.fftSize)
+      }
     }
 
     const peaks = new Float32Array(BARS)
@@ -103,15 +123,22 @@ export default function Analyzer() {
     ro.observe(canvas)
     resize()
 
+    // Mirrored, the way cava draws it: each band is computed once and painted
+    // twice, so the display is symmetric about the centre line. Band 0 (bass)
+    // lands on both outer edges and the treble meets in the middle — that
+    // ordering is what puts the loud end of the spectrum at the outside.
     const drawSpectrum = (w, h) => {
       analyser.getByteFrequencyData(freq)
-      const gap = Math.max(1, Math.round(w / (BARS * 10)))
-      const bw = (w - gap * (BARS - 1)) / BARS
+      const total = BARS * 2
+      const gap = Math.max(1, Math.round(w / (total * 6)))
+      const bw = (w - gap * (total - 1)) / total
+      const barW = Math.max(1, Math.ceil(bw))
+      const slot = bw + gap
 
       for (let b = 0; b < BARS; b++) {
         let sum = 0
         let n = 0
-        for (let i = edges[b]; i < edges[b + 1] && i < bins; i++) {
+        for (let i = edges[b]; i < edges[b + 1] && i < freq.length; i++) {
           sum += freq[i]
           n++
         }
@@ -119,16 +146,17 @@ export default function Analyzer() {
         levels[b] += (target - levels[b]) * (target > levels[b] ? ATTACK : RELEASE)
         const v = levels[b]
 
-        const x = Math.round(b * (bw + gap))
-        const barW = Math.max(1, Math.ceil(bw))
-
-        ctx.fillStyle = gradient
-        ctx.fillRect(x, h - v * h, barW, v * h)
-
         peaks[b] = Math.max(v, peaks[b] - PEAK_FALL)
-        const py = h - peaks[b] * h
-        ctx.fillStyle = "#dfe4e8"
-        ctx.fillRect(x, Math.max(0, Math.min(h - 2, py)), barW, 2)
+        const barY = h - v * h
+        const barH = v * h
+        const py = Math.max(0, Math.min(h - 2, h - peaks[b] * h))
+
+        for (const x of [Math.round(b * slot), Math.round((total - 1 - b) * slot)]) {
+          ctx.fillStyle = gradient
+          ctx.fillRect(x, barY, barW, barH)
+          ctx.fillStyle = "#dfe4e8"
+          ctx.fillRect(x, py, barW, 2)
+        }
       }
     }
 
@@ -185,6 +213,7 @@ export default function Analyzer() {
       raf = requestAnimationFrame(frame)
       if (t - lastDraw < FRAME_MS) return
       lastDraw = t
+      syncBuffers()
 
       const w = canvas.width
       const h = canvas.height
