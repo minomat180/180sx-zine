@@ -51,6 +51,10 @@ export default function Fakeamp({ visible, onClose, volume, instanceRef }) {
       const left = Math.max(8, Math.round(window.innerWidth - 295))
       const webamp = new Webamp({
         initialTracks: tracks,
+        // Wires the Media Session API: headphone buttons, keyboard media keys
+        // and the OS's own now-playing panel drive the player, and the current
+        // track shows up there instead of a blank "180SX Type X".
+        enableMediaSession: true,
         windowLayout: {
           main: { position: { top: 24, left } },
           equalizer: { position: { top: 140, left } },

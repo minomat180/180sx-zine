@@ -42,6 +42,34 @@ export const tracks = [
     url: "/media/audio/fake-digital-life.mp3",
     metaData: { title: "Fake Digital Life", artist: "ThirdEy3" },
   },
+  {
+    url: "/media/audio/celestia.mp3",
+    metaData: { title: "Celestia", artist: "EXODIA" },
+  },
+  {
+    url: "/media/audio/kyou-wa-watashi.mp3",
+    metaData: { title: "Kyou wa Watashi ni Wakare wo Tsugete", artist: "mp3" },
+  },
+  {
+    url: "/media/audio/hyper-01-im-so-lucky.mp3",
+    metaData: { title: "Im So Lucky (Hardstyle)", artist: "Hyperborean Classics" },
+  },
+  {
+    url: "/media/audio/hyper-02-the-days.mp3",
+    metaData: { title: "The Days (NOTION Remix)", artist: "Hyperborean Classics" },
+  },
+  {
+    url: "/media/audio/hyper-03-cool-for-the-summer.mp3",
+    metaData: { title: "Cool For The Summer (Hardstyle Remix)", artist: "Hyperborean Classics" },
+  },
+  {
+    url: "/media/audio/hyper-04-vielleicht.mp3",
+    metaData: { title: "Vielleicht Vielleicht (Hardtekk Remix)", artist: "Hyperborean Classics" },
+  },
+  {
+    url: "/media/audio/hyper-05-safe-and-sound.mp3",
+    metaData: { title: "Safe and Sound (Hardstyle Remix)", artist: "Hyperborean Classics" },
+  },
 ]
 
 // ── VIDEO ────────────────────────────────────────────────────────────────────
