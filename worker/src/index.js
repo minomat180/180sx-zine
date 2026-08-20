@@ -47,6 +47,18 @@ export class ChatRoom {
     // duration for as long as anyone has the tab open.
     this.state.acceptWebSocket(server)
 
+    // Cloudflare closes a WebSocket that carries no traffic for a couple of
+    // minutes, which is what was dropping idle chatters. The client pings to
+    // keep it warm — and this pair lets the runtime answer that ping on its
+    // own, so the object stays hibernated and the keepalive costs no duration.
+    // The strings have to match byte for byte.
+    this.state.setWebSocketAutoResponse(
+      new WebSocketRequestResponsePair(
+        JSON.stringify({ type: "ping" }),
+        JSON.stringify({ type: "pong" }),
+      ),
+    )
+
     return new Response(null, { status: 101, webSocket: client })
   }
 
