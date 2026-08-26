@@ -136,8 +136,59 @@
 .volumePopup input[type="range"] {
   writing-mode: vertical-lr;
   direction: rtl;
+  appearance: none;
+  -webkit-appearance: none;
   height: 76px;
   width: 24px;
+  margin: 0;
+  background: transparent;
+  cursor: default;
+}
+
+/* Firefox draws its own track box we need to hollow out, since we're doing
+   the sunken-well look ourselves via ::-moz-range-track below. */
+.volumePopup input[type="range"]::-moz-range-track {
+  width: 6px;
+  height: 100%;
+  background: var(--w98-dark);
+  box-shadow:
+    inset -1px -1px var(--w98-white),
+    inset 1px 1px var(--w98-shadow);
+}
+
+.volumePopup input[type="range"]::-webkit-slider-runnable-track {
+  width: 6px;
+  height: 100%;
+  background: var(--w98-dark);
+  box-shadow:
+    inset -1px -1px var(--w98-white),
+    inset 1px 1px var(--w98-shadow);
+}
+
+.volumePopup input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 12px;
+  border: none;
+  border-radius: 0;
+  background: var(--w98-face);
+  box-shadow:
+    inset -1px -1px var(--w98-dark),
+    inset 1px 1px var(--w98-white),
+    inset -2px -2px var(--w98-shadow),
+    inset 2px 2px var(--w98-light);
+}
+
+.volumePopup input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 12px;
+  margin-left: -7px;
+  background: var(--w98-face);
+  box-shadow:
+    inset -1px -1px var(--w98-dark),
+    inset 1px 1px var(--w98-white),
+    inset -2px -2px var(--w98-shadow),
+    inset 2px 2px var(--w98-light);
 }
 
 @media (max-width: 767px) {
