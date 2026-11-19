@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 320" width="1280" height="320" role="img" aria-labelledby="t">
+  <title id="t">180sx-zine: A Nissan 180SX fan zine built as a Windows 98 desktop</title>
+  <rect x="0.5" y="0.5" width="1279" height="319" rx="12" fill="#0d1117" stroke="#30363d"/>
+  <rect x="80" y="96" width="56" height="6" fill="#f85149"/>
+  <text x="80" y="196" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-weight="700" font-size="84" fill="#e6edf3">180sx-zine</text>
+  <text x="80" y="248" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-weight="400" font-size="24" fill="#8b949e">A Nissan 180SX fan zine built as a Windows 98 desktop</text>
+  <g fill="none" stroke-width="2" stroke-linejoin="round">
+    <!-- Win98 window -->
+    <rect x="921" y="57" width="258" height="206" stroke="#8b949e"/>
+    <rect x="921" y="57" width="258" height="28" fill="#f85149" stroke="#f85149"/>
+    <rect x="1104" y="63" width="18" height="16" fill="#0d1117"/>
+    <rect x="1127" y="63" width="18" height="16" fill="#0d1117"/>
+    <rect x="1150" y="63" width="18" height="16" fill="#0d1117"/>
+    <line x1="935" y1="71" x2="1001" y2="71" stroke="#0d1117" stroke-width="4"/>
+    <!-- front of the car, headlights up -->
+    <path d="M1008 200 L1020 160 Q1022 154 1029 154 L1071 154 Q1078 154 1080 160 L1092 200" stroke="#8b949e"/>
+    <path d="M944 238 L950 212 Q953 200 964 200 L1136 200 Q1147 200 1150 212 L1156 238 Z" stroke="#8b949e"/>
+    <line x1="1010" y1="224" x2="1090" y2="224" stroke="#8b949e"/>
+    <rect x="954" y="238" width="22" height="14" fill="#8b949e" stroke="#8b949e"/>
+    <rect x="1124" y="238" width="22" height="14" fill="#8b949e" stroke="#8b949e"/>
+    <path d="M956 200 L960 168 L1002 168 L1006 200" stroke="#8b949e"/>
+    <path d="M1094 200 L1098 168 L1140 168 L1144 200" stroke="#8b949e"/>
+    <rect x="966" y="176" width="30" height="16" fill="#f85149" stroke="#f85149"/>
+    <rect x="1104" y="176" width="30" height="16" fill="#f85149" stroke="#f85149"/>
+  </g>
+</svg>
