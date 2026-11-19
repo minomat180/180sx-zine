@@ -3,6 +3,8 @@
 //
 //  This is the only file you need to edit to make the site yours.
 //  Put files in public/media/{photos,audio,video}/ and list them here.
+//  public/media/ is not in git: `npm run media` fills it from the private
+//  repo minomat180/180sx-media.
 //  Paths are absolute from public/, so "/media/audio/foo.mp3" means
 //  "public/media/audio/foo.mp3".
 // ─────────────────────────────────────────────────────────────────────────────
@@ -12,9 +14,9 @@
 // unless you set `wallpaper` below.
 export const photos = [
   { src: "/media/photos/hero.jpg", caption: "Type X — 1996 aero package" },
-  { src: "/media/photos/black.jpg", caption: "Kouki front end" },
+  { src: "/media/photos/black.jpg", caption: "Kouki tail lamps" },
   { src: "/media/photos/navy.jpg", caption: "Three-quarter" },
-  { src: "/media/photos/rear.jpg", caption: "Kouki tail lamps" },
+  { src: "/media/photos/rear.jpg", caption: "Black RPS13, tuned" },
   { src: "/media/photos/meihan-2019.webp", caption: "Meihan, 2019 — leading an S13" },
 ]
 
@@ -127,4 +129,10 @@ with Nissan Motor Co., Ltd.
 // C:\About — the Start menu's About box.
 export const aboutText = `Nissan 180SX Type X.
 
-Everything here is a window. Try the console.`
+Everything here is a window. Try the console.
+
+Gallery photos via Wikimedia Commons:
+Tokumeigakarinoaoshima (CC BY-SA 4.0, CC0),
+Toyotacoronaexsaloon (CC BY-SA 4.0).
+Video: "SR20 180SX Touge Drift", Jack Atkins.
+Music: Zachariehs, Kaikobad, Silo, ThirdEy3, EXODIA.`

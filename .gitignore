@@ -25,3 +25,10 @@ dist-ssr
 
 # env stuff
 *.env
+
+# wrangler state
+.wrangler/
+
+# Media comes from the private repo minomat180/180sx-media (npm run media)
+/public/media/
+/.media/

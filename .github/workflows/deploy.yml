@@ -11,6 +11,7 @@
 # Repository settings it needs:
 #   secret   CLOUDFLARE_API_TOKEN   account token with Cloudflare Pages: Edit
 #   variable CLOUDFLARE_ACCOUNT_ID
+#   secret   MEDIA_DEPLOY_KEY       read-only deploy key of minomat180/180sx-media
 #
 # The chat Durable Object (worker/) is deployed by hand and is not touched here.
 
@@ -33,6 +34,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      HAS_MEDIA_KEY: ${{ secrets.MEDIA_DEPLOY_KEY != '' }}
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -41,6 +44,19 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run lint
+      # Photos, music and video live in the private repo 180sx-media and are
+      # fetched with a read-only deploy key. Without the key (pull requests
+      # from forks) the site still builds, just without media; such builds are
+      # never deployed.
+      - uses: actions/checkout@v7
+        if: env.HAS_MEDIA_KEY == 'true'
+        with:
+          repository: minomat180/180sx-media
+          ssh-key: ${{ secrets.MEDIA_DEPLOY_KEY }}
+          path: .media
+          persist-credentials: false
+      - run: npm run media
+        if: env.HAS_MEDIA_KEY == 'true'
       - run: npm run build
       - uses: actions/upload-artifact@v7
         with:

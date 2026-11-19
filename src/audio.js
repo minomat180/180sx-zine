@@ -1,6 +1,6 @@
 // Synthesised UI sounds. The Windows 98 error chord is a copyrighted asset and
 // shipping a .wav for two notes is overkill, so it's generated — the same
-// approach the older ~/projects/180sx page takes for its engine note.
+// approach the older single-file 180sx page took for its engine note.
 
 let ctx = null
 let masterGain = null
