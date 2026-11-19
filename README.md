@@ -9,7 +9,7 @@
 
 ### A Nissan 180SX fan zine built as a Windows 98 desktop
 
-**There are no pages: you land on a desktop, open windows and poke at a spec sheet, a gallery, a Winamp, a console and a live chat.**
+**There are no pages: you land on a desktop, open windows and poke at a spec sheet, a gallery, a Winamp clone, a console and a live chat.**
 
 [![License: all rights reserved](https://img.shields.io/badge/license-all%20rights%20reserved-f85149?style=flat-square)](LICENSE)
 [![Deploy](https://img.shields.io/github/actions/workflow/status/minomat180/180sx-zine/deploy.yml?branch=main&style=flat-square&label=deploy)](https://github.com/minomat180/180sx-zine/actions/workflows/deploy.yml)
@@ -32,26 +32,26 @@
 
 ---
 
-An enthusiast zine about the Nissan 180SX Type X, the last 180SX series (1996
-to 1998). It starts with a BIOS POST screen, the wallpaper glitches every so
+An enthusiast zine about the Nissan 180SX Type X, the trim of the last 180SX
+(1996 to 1998). It starts with a BIOS POST screen, the wallpaper glitches every so
 often, and Start > Shut Down ends on "It's now safe to turn off your computer".
 
-- **A window manager in about 200 lines.** `src/os/windowStore.js` holds all
-  window state (open windows, positions, z-order, minimised and maximised) in a
-  plain module-level store read with `useSyncExternalStore`. There is no state
-  library, no router and no context provider.
-- **Winamp lives outside React.** [Webamp](https://webamp.org) draws its own
+- **All window state in one 216-line store.** `src/os/windowStore.js` keeps
+  open windows, positions, z-order and the minimized and maximized flags in a
+  plain module-level object. Components subscribe with
+  `useSyncExternalStore`; there is no Redux, router or context.
+- **Webamp lives outside the React tree.** [Webamp](https://webamp.org) draws its own
   chrome and appends itself to `document.body`, and unmounting it stops
   playback, so `Fakeamp.jsx` creates it once and afterwards only hides it. It
   is about 900 kB minified and only loads when someone opens the player.
 - **A spectrum analyzer on the player's audio graph.** The Analyzer window
-  draws spectrum, oscilloscope and radial views from Webamp's analyser node,
+  draws spectrum, oscilloscope and radial views from Webamp's `AnalyserNode`,
   and `src/os/ampBridge.js` tells it when the player appears, because the
   player may not exist yet when the Analyzer opens.
 - **Chat on one Durable Object.** A Pages Function hands the WebSocket to a
   Durable Object in a separate Worker. The room keeps up to 60 messages in
   memory and writes nothing to storage.
-- **Sounds and images made in the browser.** UI sounds are synthesised with the
+- **Sounds and images made in the browser.** UI sounds are synthesized with the
   Web Audio API in `src/audio.js`, and the Generator composites your photo
   with Canvas 2D without uploading it anywhere.
 
@@ -75,7 +75,7 @@ often, and Start > Shut Down ends on "It's now safe to turn off your computer".
 <sub>Gallery, Generator and the first error dialogs from CLICK ME.</sub>
 </div>
 
-Below 768 px wide, windows open maximised and dragging is off.
+Below 768 px wide, windows open maximized and dragging is off.
 
 ## Quick start
 
@@ -103,22 +103,17 @@ Needs Node 20.19+ or 22.12+ (CI uses 24).
 
 ## How it works
 
-**Windows.** `src/os/windowStore.js` is the only window state.
-`src/os/appSpecs.js` holds window metadata and imports no components, so the
+**Windows.** `src/os/appSpecs.js` holds window metadata and imports no components, so the
 taskbar, Start menu and console can list apps without importing every
 component, and `App.jsx` alone maps ids to components.
-
-**Fakeamp and the Analyzer.** Webamp is dynamically imported on first open and
-never unmounted. The Analyzer subscribes to `src/os/ampBridge.js` and reads the
-player's analyser node whenever it exists.
 
 **Chat.** The browser connects to a Cloudflare Pages Function
 (`functions/api/chat.js`), which forwards the WebSocket to the `ChatRoom`
 Durable Object in `worker/`, because a Pages project can bind to a Durable
-Object but cannot define one. History lives in memory only and is gone when the
-object hibernates. Idle sockets were being closed by Cloudflare after about two
-minutes; the client now pings every 30 seconds and the Durable Object answers
-with `setWebSocketAutoResponse`, which does not wake it from hibernation.
+Object but cannot define one. Messages are lost when the object hibernates.
+Cloudflare closes idle WebSockets after about two minutes, so the client pings
+every 30 seconds and the Durable Object answers with `setWebSocketAutoResponse`,
+which does not wake it from hibernation.
 
 **Build.** `vite.config.js` rewrites one malformed media query in 98.css 0.1.21
 that otherwise fails the production CSS minifier.
@@ -154,13 +149,15 @@ Built with [React](https://react.dev), [Vite](https://vite.dev),
 from Google Fonts. The desktop-as-website idea and look follow
 [fakeverything.com](https://fakeverything.com).
 
-| Media | Source | Licence |
+| Media | Source | License |
 | --- | --- | --- |
 | Gallery photos | Tokumeigakarinoaoshima: [front](https://commons.wikimedia.org/wiki/File:Nissan_180SX_TYPE_X_(E-RPS13)_front.jpg), [rear](https://commons.wikimedia.org/wiki/File:Nissan_180SX_TYPE_X_(E-RPS13)_rear.jpg) | CC BY-SA 4.0 |
 | | Tokumeigakarinoaoshima: [tuned RPS13](https://commons.wikimedia.org/wiki/File:Tuned_Nissan_180SX_(RPS13)_front.JPG) | CC0 |
 | | Toyotacoronaexsaloon: [Type X](https://commons.wikimedia.org/wiki/File:Nissan_180sx_rps13_typex_1_f.jpg) | CC BY-SA 4.0 |
+| Gallery photo `meihan-2019.webp` | unknown; watermarked "LXII Photography" | not licensed for reuse |
+| Wallpaper | unknown | not licensed for reuse |
 | Drift video | [SR20 180SX Touge Drift](https://www.youtube.com/watch?v=CsaEQvSFEgM) by Jack Atkins | not licensed for reuse |
-| Music | Zachariehs, Kaikobad, Silo, ThirdEy3, EXODIA | not licensed for reuse |
+| Music | Zachariehs, Kaikobad, Silo, ThirdEy3, EXODIA; one track by an unknown artist | not licensed for reuse |
 
 The screenshots in `docs/` show some of these.
 
