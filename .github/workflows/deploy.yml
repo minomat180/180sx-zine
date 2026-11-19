@@ -27,7 +27,8 @@ permissions:
 
 concurrency:
   group: deploy-${{ github.ref }}
-  cancel-in-progress: true
+  # Never cancel a production upload halfway; superseded branch runs can go.
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   build:
@@ -70,5 +71,9 @@ jobs:
           npx --yes wrangler@4.165.0 pages deploy dist \
             --project-name=180sx --branch="$BRANCH" \
             --commit-hash="$GITHUB_SHA" | tee deploy.log
-          url=$(grep -Eo 'https://[a-z0-9.-]+\.pages\.dev' deploy.log | tail -1)
-          echo "url=${url:-https://180sx.tech}" >> "$GITHUB_OUTPUT"
+          if [ "$BRANCH" = main ]; then
+            url=https://180sx.tech
+          else
+            url=$(grep -Eo 'https://[a-z0-9.-]+\.pages\.dev' deploy.log | tail -1)
+          fi
+          echo "url=$url" >> "$GITHUB_OUTPUT"
