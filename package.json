@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "media": "sh scripts/media.sh"
   },
   "dependencies": {
     "98.css": "^0.1.21",

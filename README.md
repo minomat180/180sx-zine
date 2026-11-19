@@ -65,6 +65,7 @@ Needs Node 20.19+ or 22.12+ (CI uses 24).
 
 ```sh
 npm ci
+npm run media    # photos, music and video into public/media/ (see below)
 npm run dev      # Vite dev server
 npm run lint     # oxlint
 npm run build    # production build into dist/
@@ -74,12 +75,16 @@ Chat only works on the deployed site: the Vite dev server has no Pages
 Function or Durable Object, and the Chat window says it cannot reach the room.
 
 All content (photos, wallpaper, playlist, video, spec text) is listed in
-`src/media.js`; the files live in `public/media/`.
+`src/media.js`. The media files are not in this repository: most of them
+belong to other people, so they live in a private repo, `minomat180/180sx-media`.
+`npm run media` clones it into `.media/` and copies the folders into
+`public/media/`; that needs read access to it. Without it the site still builds
+and runs, with empty gallery, player and video windows.
 
 ## Deploy
 
-`.github/workflows/deploy.yml` lints and builds every push and pull request.
-For pushes it then uploads `dist/` and `functions/` to the Cloudflare Pages
+`.github/workflows/deploy.yml` lints and builds every push and pull request,
+fetching the media repo with a read-only deploy key first. For pushes it then uploads `dist/` and `functions/` to the Cloudflare Pages
 project with `wrangler pages deploy`: production from `main`, a preview URL for
 any other branch. Pull requests are never deployed.
 
@@ -106,9 +111,17 @@ Built with [React](https://react.dev), [Vite](https://vite.dev),
 from Google Fonts. The desktop-as-website idea and look follow
 [fakeverything.com](https://fakeverything.com).
 
-The code and text are mine, all rights reserved (see `LICENSE`). The photos,
-music and video under `public/media/` belong to their creators and are not
-covered by that license.
+Gallery photos: Tokumeigakarinoaoshima ([front](https://commons.wikimedia.org/wiki/File:Nissan_180SX_TYPE_X_(E-RPS13)_front.jpg),
+[rear](https://commons.wikimedia.org/wiki/File:Nissan_180SX_TYPE_X_(E-RPS13)_rear.jpg), CC BY-SA 4.0;
+[tuned RPS13](https://commons.wikimedia.org/wiki/File:Tuned_Nissan_180SX_(RPS13)_front.JPG), CC0) and
+Toyotacoronaexsaloon ([Type X](https://commons.wikimedia.org/wiki/File:Nissan_180sx_rps13_typex_1_f.jpg),
+CC BY-SA 4.0), via Wikimedia Commons. Drift video:
+[SR20 180SX Touge Drift](https://www.youtube.com/watch?v=CsaEQvSFEgM) by Jack
+Atkins. Music by Zachariehs, Kaikobad, Silo, ThirdEy3 and EXODIA. The
+screenshots in `docs/` show some of these.
+
+The code and text are mine, all rights reserved (see `LICENSE`). The media
+belongs to its creators and is not covered by that license.
 
 An enthusiast project. Not produced by, endorsed by, or connected with Nissan
 Motor Co., Ltd.
