@@ -28,26 +28,28 @@ Start > Shut Down ends on "It's now safe to turn off your computer".
 
 ## The interesting parts
 
-**A window manager in about 200 lines.** `src/os/windowStore.js` is the only
-real state: open windows, positions, z-order, minimised and maximised flags. It
-is a plain module-level store read with `useSyncExternalStore`, with no state
-library or context provider. `src/os/appSpecs.js` holds window metadata and
-imports no components, so any app can open any other app (the console's
-`open gallery`, the Start menu) without an import cycle.
+**A window manager in about 200 lines.** `src/os/windowStore.js` holds all
+window state: open windows, positions, z-order, minimised and maximised flags.
+It is a plain module-level store read with `useSyncExternalStore`, with no
+state library or context provider. `src/os/appSpecs.js` holds window metadata
+and imports no components, so the taskbar, Start menu and console can list apps
+without importing every component, and `App.jsx` alone maps ids to
+components.
 
 **Webamp does not fit in a React tree.** It draws its own chrome and appends
 itself to `document.body`, and unmounting it stops playback. `Fakeamp.jsx`
 creates it once, on first open, and afterwards only toggles its visibility.
 The Analyzer reads Webamp's audio graph through `src/os/ampBridge.js`, which
 tells it when the player appears, because the player may not exist yet when the
-Analyzer opens. Webamp is about 900 kB, so it is imported dynamically and never
+Analyzer opens. Webamp is about 900 kB minified, so it is imported dynamically and never
 loads unless someone opens the player.
 
-**Chat with no backend to run.** The browser connects to a Cloudflare Pages
+**Chat on one Durable Object.** The browser connects to a Cloudflare Pages
 Function (`functions/api/chat.js`), which hands the WebSocket to a Durable
 Object in a separate Worker (`worker/`), because a Pages project can bind to a
-Durable Object but cannot define one. The room keeps the last 60 messages in
-memory and writes nothing to storage. Idle sockets were being closed by
+Durable Object but cannot define one. The room keeps up to 60 messages in
+memory while the object is awake and writes nothing to storage, so the history
+is gone whenever it hibernates. Idle sockets were being closed by
 Cloudflare after about two minutes; the client now pings every 30 seconds and
 the Durable Object answers with `setWebSocketAutoResponse`, which does not wake
 it from hibernation.
@@ -59,7 +61,7 @@ wide, windows open maximised and dragging is off.
 
 ## Run it
 
-Needs Node 24 (what CI uses).
+Needs Node 20.19+ or 22.12+ (CI uses 24).
 
 ```sh
 npm ci
@@ -76,10 +78,10 @@ All content (photos, wallpaper, playlist, video, spec text) is listed in
 
 ## Deploy
 
-`.github/workflows/deploy.yml` lints and builds every push, then uploads
-`dist/` and `functions/` to the Cloudflare Pages project with
-`wrangler pages deploy`: production from `main`, a preview URL for any other
-branch. Pull requests only build.
+`.github/workflows/deploy.yml` lints and builds every push and pull request.
+For pushes it then uploads `dist/` and `functions/` to the Cloudflare Pages
+project with `wrangler pages deploy`: production from `main`, a preview URL for
+any other branch. Pull requests are never deployed.
 
 The chat Worker changes rarely and is deployed by hand:
 
@@ -92,7 +94,7 @@ Worker `180sx-chat`), set once in the Cloudflare dashboard.
 
 ## Status
 
-Live at 180sx.tech. Feature work stopped in August 2026. Known gap: the player's title
+Feature work stopped in August 2026. Known gap: the player's title
 bar still reads WINAMP, because the text is part of the default skin bitmap.
 Changing it needs a custom `.wsz` skin.
 
@@ -100,7 +102,9 @@ Changing it needs a custom `.wsz` skin.
 
 Built with [React](https://react.dev), [Vite](https://vite.dev),
 [98.css](https://jdan.github.io/98.css/) and [Webamp](https://webamp.org)
-(all MIT). Fonts: Press Start 2P and Handjet (SIL Open Font License).
+(all MIT). Fonts: Press Start 2P and Handjet (SIL Open Font License), loaded
+from Google Fonts. The desktop-as-website idea and look follow
+[fakeverything.com](https://fakeverything.com).
 
 The code and text are mine, all rights reserved (see `LICENSE`). The photos,
 music and video under `public/media/` belong to their creators and are not
