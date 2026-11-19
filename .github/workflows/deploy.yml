@@ -1,0 +1,74 @@
+# Lint, build and publish to Cloudflare Pages (project "180sx").
+#
+# The Pages project is a Direct Upload project, so Cloudflare does not build
+# anything itself: this workflow builds dist/ and uploads it with wrangler.
+# `wrangler pages deploy` also bundles functions/ (the chat endpoint).
+#
+#   push to main         -> production deploy (https://180sx.tech)
+#   push to other branch -> preview deploy (<branch>.180sx.pages.dev)
+#   pull request         -> lint and build only
+#
+# Repository settings it needs:
+#   secret   CLOUDFLARE_API_TOKEN   account token with Cloudflare Pages: Edit
+#   variable CLOUDFLARE_ACCOUNT_ID
+#
+# The chat Durable Object (worker/) is deployed by hand and is not touched here.
+
+name: deploy
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+      - uses: actions/upload-artifact@v7
+        with:
+          name: dist
+          path: dist/
+          retention-days: 7
+
+  deploy:
+    needs: build
+    # Pushes only, and never from forks (they have no access to the secret).
+    if: github.event_name != 'pull_request' && github.repository == 'minomat180/180sx-zine'
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ github.ref_name == 'main' && 'production' || 'preview' }}
+      url: ${{ steps.deploy.outputs.url }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
+        with:
+          name: dist
+          path: dist/
+      - id: deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          npx --yes wrangler@4.165.0 pages deploy dist \
+            --project-name=180sx --branch="$BRANCH" \
+            --commit-hash="$GITHUB_SHA" | tee deploy.log
+          url=$(grep -Eo 'https://[a-z0-9.-]+\.pages\.dev' deploy.log | tail -1)
+          echo "url=${url:-https://180sx.tech}" >> "$GITHUB_OUTPUT"
