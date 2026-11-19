@@ -25,3 +25,7 @@ dist-ssr
 
 # env stuff
 *.env
+
+# wrangler and npm caches
+.wrangler/
+.npm/

@@ -1,83 +1,110 @@
 # 180SX Zine
 
-The Nissan 180SX Type X fan zine, built as a fake Windows 98 desktop. There are no
-pages and nothing scrolls — you land on a desktop and open windows.
+A fan zine about the Nissan 180SX Type X, built as a fake Windows 98 desktop.
+There are no pages: you land on a desktop and open windows.
 
-Style reference: [fakeverything.com](https://fakeverything.com).
+Live at **[180sx.tech](https://180sx.tech)**.
 
-```
-npm install
-npm run dev
-```
+![The 180sx.tech desktop with the spec sheet, the console after `fastfetch`, and the Webamp player open](docs/desktop.png)
 
-## Making it yours
+![The gallery, the overlay generator and two error dialogs from the CLICK ME icon](docs/gallery-errors.png)
 
-**Everything you'd want to change lives in `src/media.js`.** Drop files into
-`public/media/` and list them there. No component edits required — that's tested.
+## What is on the desktop
 
-| You want to… | Do this |
+| Icon | What it does |
 | --- | --- |
-| Add your music | Put mp3s in `public/media/audio/`, list them in `tracks` |
-| Use your drift video | Put it in `public/media/video/`, set `video` to `{ kind: "file", src: "/media/video/yours.mp4" }` |
-| Use a YouTube video instead | Set `video` to `{ kind: "youtube", id: "VIDEO_ID" }` |
-| Add photos | Put them in `public/media/photos/`, list them in `photos` |
-| Change the wallpaper | Point `wallpaper` at any file in `public/media/photos/` |
-| Edit the spec sheet | Rewrite `specsText` — it's plain text, rendered as-is |
+| Specs.txt | Notepad with the Type X spec sheet |
+| Gallery | Image viewer that pages through the photos |
+| Video | A Win98 frame around a self-hosted drift clip |
+| Console | A small shell: `help`, `dir`, `open gallery`, `play`, `fastfetch`, `whoami`, `drift`, `cls` |
+| Generator | Load your own photo, stack overlays and a caption on it, save the result. The image never leaves the browser |
+| Fakeamp | [Webamp](https://webamp.org), a Winamp 2 clone, with the zine's playlist |
+| Analyzer | Spectrum, oscilloscope and radial views of whatever Fakeamp is playing |
+| Chat | One shared room for everyone currently on the site, over a WebSocket |
+| CLICK ME | An error dialog. Every OK spawns two more, until it blue-screens |
 
-### Current placeholders
+It starts with a BIOS POST screen, the wallpaper glitches every so often, and
+Start > Shut Down ends on "It's now safe to turn off your computer".
 
-These are stand-ins, meant to be replaced:
+## The interesting parts
 
-- **Audio** — four tracks in `public/media/audio/`. The placeholder SR20DET
-  engine clips from `~/projects/180sx` are gone.
-- **Photos** — extracted from the base64 blobs in `~/projects/180sx/index.html`
-  (Wikimedia Commons, CC BY-SA 4.0 / CC0). See `scripts/extract-photos.mjs`.
+**A window manager in about 200 lines.** `src/os/windowStore.js` is the only
+real state: open windows, positions, z-order, minimised and maximised flags. It
+is a plain module-level store read with `useSyncExternalStore`, with no state
+library or context provider. `src/os/appSpecs.js` holds window metadata and
+imports no components, so any app can open any other app (the console's
+`open gallery`, the Start menu) without an import cycle.
 
-## What's on the desktop
+**Webamp does not fit in a React tree.** It draws its own chrome and appends
+itself to `document.body`, and unmounting it stops playback. `Fakeamp.jsx`
+creates it once, on first open, and afterwards only toggles its visibility.
+The Analyzer reads Webamp's audio graph through `src/os/ampBridge.js`, which
+tells it when the player appears, because the player may not exist yet when the
+Analyzer opens. Webamp is about 900 kB, so it is imported dynamically and never
+loads unless someone opens the player.
 
-| Icon | |
-| --- | --- |
-| `Specs.txt` | Notepad with the Type X spec sheet |
-| `Gallery` | Image viewer, cycles the photos |
-| `Video` | Win98 frame around the drift video |
-| `Console` | Working terminal — try `help`, `fastfetch`, `open gallery`, `drift` |
-| `Generator` | Upload a photo, stack overlays on it, download the result |
-| `Fakeamp` | A real Winamp ([Webamp](https://webamp.org)) with EQ and playlist |
-| `CLICK ME` | Error-dialog bomb. Every OK spawns two more, until it blue-screens |
+**Chat with no backend to run.** The browser connects to a Cloudflare Pages
+Function (`functions/api/chat.js`), which hands the WebSocket to a Durable
+Object in a separate Worker (`worker/`), because a Pages project can bind to a
+Durable Object but cannot define one. The room keeps the last 60 messages in
+memory and writes nothing to storage. Idle sockets were being closed by
+Cloudflare after about two minutes; the client now pings every 30 seconds and
+the Durable Object answers with `setWebSocketAutoResponse`, which does not wake
+it from hibernation.
 
-Start menu → `Shut Down…` gives you the "safe to turn off your computer" screen.
+**Smaller things.** UI sounds are synthesised in `src/audio.js` rather than
+shipped as files. `vite.config.js` rewrites one malformed media query in
+98.css 0.1.21 that otherwise fails the production CSS minifier. Below 768 px
+wide, windows open maximised and dragging is off.
 
-## How it's put together
+## Run it
 
-- **React + Vite**, plain JSX. [`98.css`](https://jdan.github.io/98.css/) for all
-  window chrome.
-- `src/os/windowStore.js` is the only real state: open windows, positions,
-  z-order. A small external store, so dragging one window doesn't re-render the
-  others.
-- `src/os/appSpecs.js` holds window metadata with **no component imports**, so
-  any app can open any other app without an import cycle. `App.jsx` maps ids to
-  components.
-- **Fakeamp is not a managed window.** Webamp renders its own chrome and appends
-  itself to `document.body`, so `Fakeamp.jsx` toggles that node's visibility
-  directly instead of unmounting (disposing it loses playback state). It's also
-  dynamically imported — ~900 kB that never loads unless you open the player.
-- The **Generator** composites with plain Canvas 2D (`src/apps/overlays.js`).
-  Overlays have a `layer` so draw order is fixed regardless of click order.
-  Nothing is uploaded anywhere; the reference site emails the render, this one
-  just downloads it.
-- UI sounds are synthesised (`src/audio.js`) rather than shipped as files.
-- `vite.config.js` patches one malformed media query in 98.css v0.1.21 that
-  would otherwise fail the production build.
+Needs Node 24 (what CI uses).
 
-**Mobile:** below 768px, windows open maximized and dragging is off. The desktop
-metaphor doesn't survive a phone, but it stays usable.
+```sh
+npm ci
+npm run dev      # Vite dev server
+npm run lint     # oxlint
+npm run build    # production build into dist/
+```
 
-## Not done
+Chat only works on the deployed site: the Vite dev server has no Pages
+Function or Durable Object, and the Chat window says it cannot reach the room.
 
-- Fakeamp's title bar still reads `WINAMP`. That text is baked into the skin
-  bitmap, so renaming it to `FAKEAMP` needs a custom `.wsz` skin.
+All content (photos, wallpaper, playlist, video, spec text) is listed in
+`src/media.js`; the files live in `public/media/`.
 
----
+## Deploy
 
-An enthusiast zine. Not produced by, endorsed by, or connected with Nissan Motor
-Co., Ltd.
+`.github/workflows/deploy.yml` lints and builds every push, then uploads
+`dist/` and `functions/` to the Cloudflare Pages project with
+`wrangler pages deploy`: production from `main`, a preview URL for any other
+branch. Pull requests only build.
+
+The chat Worker changes rarely and is deployed by hand:
+
+```sh
+cd worker && npx wrangler deploy
+```
+
+The Pages project binds it as the Durable Object `CHAT` (class `ChatRoom`,
+Worker `180sx-chat`), set once in the Cloudflare dashboard.
+
+## Status
+
+Live at 180sx.tech. Feature work stopped in August 2026. Known gap: the player's title
+bar still reads WINAMP, because the text is part of the default skin bitmap.
+Changing it needs a custom `.wsz` skin.
+
+## Credits and license
+
+Built with [React](https://react.dev), [Vite](https://vite.dev),
+[98.css](https://jdan.github.io/98.css/) and [Webamp](https://webamp.org)
+(all MIT). Fonts: Press Start 2P and Handjet (SIL Open Font License).
+
+The code and text are mine, all rights reserved (see `LICENSE`). The photos,
+music and video under `public/media/` belong to their creators and are not
+covered by that license.
+
+An enthusiast project. Not produced by, endorsed by, or connected with Nissan
+Motor Co., Ltd.
